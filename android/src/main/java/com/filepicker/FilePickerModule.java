@@ -2,11 +2,9 @@ package com.filepicker;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -14,32 +12,25 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.bridge.WritableMap;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FilePickerModule extends ReactContextBaseJavaModule implements ActivityEventListener {
 
-    static final int REQUEST_LAUNCH_FILE_CHOOSER = 2;
+    static final int REQUEST_LAUNCH_FILE_CHOOSER = 203040;
 
     private final ReactApplicationContext mReactContext;
 
-    private Callback mCallback;
-    WritableMap response;
+    private Promise mPromise;
 
-    public FilePickerModule(ReactApplicationContext reactContext) {
+    FilePickerModule(ReactApplicationContext reactContext) {
         super(reactContext);
 
         reactContext.addActivityEventListener(this);
@@ -53,75 +44,81 @@ public class FilePickerModule extends ReactContextBaseJavaModule implements Acti
     }
 
     @ReactMethod
-    public void showFilePicker(final ReadableMap options, final Callback callback) {
-        Activity currentActivity = getCurrentActivity();
-        response = Arguments.createMap();
-
-        if (currentActivity == null) {
-            response.putString("error", "can't find current Activity");
-            callback.invoke(response);
-            return;
-        }
-		
-		launchFileChooser(callback);
-    }
-
-    // NOTE: Currently not reentrant / doesn't support concurrent requests
-    @ReactMethod
-    public void launchFileChooser(final Callback callback) {
+    public void pickFile(final ReadableMap options, final Promise promise) {
         int requestCode;
         Intent libraryIntent;
-        response = Arguments.createMap();
+
         Activity currentActivity = getCurrentActivity();
 
         if (currentActivity == null) {
-            response.putString("error", "can't find current Activity");
-            callback.invoke(response);
+            promise.reject(new Error("Cannot find current activity"));
             return;
         }
 
-        requestCode = REQUEST_LAUNCH_FILE_CHOOSER;
+        String fileType, dialogTitle;
+
+        if (options.hasKey("type")) {
+            fileType = options.getString("type");
+        } else {
+            fileType = "*/*";
+        }
+
+        if (options.hasKey("title")) {
+            dialogTitle = options.getString("title");
+        } else {
+            dialogTitle = "Select a file";
+        }
+
         libraryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        libraryIntent.setType("*/*");
+        libraryIntent.setType(fileType);
         libraryIntent.addCategory(Intent.CATEGORY_OPENABLE);
 
         if (libraryIntent.resolveActivity(mReactContext.getPackageManager()) == null) {
-            response.putString("error", "Cannot launch file library");
-            callback.invoke(response);
+            promise.reject(new Error("Cannot launch file library"));
             return;
         }
 
-        mCallback = callback;
+        mPromise = promise;
 
         try {
-            currentActivity.startActivityForResult(Intent.createChooser(libraryIntent, "Select file to Upload"), requestCode);
+            currentActivity.startActivityForResult(Intent.createChooser(libraryIntent, dialogTitle), REQUEST_LAUNCH_FILE_CHOOSER);
         } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
+            mPromise.reject(e);
+            mPromise = null;
         }
     }
 
-    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+    @Override
+    public void onNewIntent(Intent intent) {
 
-        // user cancel
-        if (resultCode != Activity.RESULT_OK) {
-            response.putBoolean("didCancel", true);
-            mCallback.invoke(response);
+    }
+
+    @Override
+    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+
+        if (requestCode != REQUEST_LAUNCH_FILE_CHOOSER || mPromise == null) {
             return;
         }
 
-        Activity currentActivity = getCurrentActivity();
+        WritableMap response = Arguments.createMap();
 
-        Uri uri;
+        if (resultCode == Activity.RESULT_CANCELED) {
+            response.putBoolean("cancelled", true);
+            mPromise.resolve(response);
+            mPromise = null;
+            return;
+        }
 
-        if (requestCode == REQUEST_LAUNCH_FILE_CHOOSER) {
-            uri = data.getData();
-            response.putString("uri", data.getData().toString());
-            String path = null;
-            path = getPath(currentActivity, uri);
+        if (resultCode == Activity.RESULT_OK) {
+            Uri uri = data.getData();
+            String path = getPath(activity, uri);
+            response.putString("uri", uri.toString());
             if (path != null) {
                 response.putString("path", path);
             }
-            mCallback.invoke(response);
+            mPromise.resolve(response);
+            mPromise = null;
+            return;
         }
     }
 
