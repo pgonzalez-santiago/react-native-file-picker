@@ -1,95 +1,60 @@
 # react-native-file-picker
-A React Native module that allows you to use native UI to select a file from the device library
-Based on [react-native-image-picker](https://github.com/marcshilling/react-native-image-picker)
 
-## Install
+A React Native module that allows you to use native UI to select a file from the device library.
 
-### iOS
-1. `npm install react-native-fille-picker@latest --save`
-2. In the XCode's "Project navigator", right click on your project's Libraries folder ➜ `Add Files to <...>`
-3. Go to `node_modules` ➜ `react-native-file-picker` ➜ `ios` ➜ select `RNFilePicker.xcodeproj`
-4. Add `RNFilePicker.a` to `Build Phases -> Link Binary With Libraries`
-5. Compile and have fun
+> This is a fork of `Lichwa/react-native-file-picker` that adds support for latest React Native, implements promises and more.
+
+## Install package
+
+You can install package with `react-native install` which will automatically link all the native files for you.
+
+```bash
+$ react-native install react-native-file-picker --save
+```
+
+**Note**: If you are installing this package with `yarn add` or `npm install`, run the following after:
+
+```bash
+$ react-native link react-native-file-picker
+```
+
+## Configure native projects
 
 ### Android
-1. `npm install react-native-file-picker@latest --save`
 
-```gradle
-// file: android/settings.gradle
-...
+In order to allow your users select files from within your application, you will have to include relevant android permissions inside your `AndroidManifest.xml` file.
 
-include ':react-native-file-picker'
-project(':react-native-file-picker').projectDir = new File(settingsDir, '../node_modules/react-native-file-picker/android')
-```
-```gradle
-// file: android/app/build.gradle
-...
-
-dependencies {
-    ...
-    compile project(':react-native-file-picker')
-}
-```
 ```xml
-<!-- file: android/src/main/AndroidManifest.xml -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.myApp">
-
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- add following permissions -->
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-feature android:name="android.hardware.camera" android:required="true"/>
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-    <!-- -->
-    ...
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.myApp">
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-feature android:name="android.hardware.camera" android:required="true"/>
+  <uses-feature android:name="android.hardware.camera.autofocus" />
+</manifest>
 ```
-```java
-// file: MainActivity.java
-...
 
-import com.filepicker.FilePickerPackage; // import package
-
-public class MainActivity extends ReactActivity {
-
-   /**
-   * A list of packages used by the app. If the app uses additional views
-   * or modules besides the default ones, add more packages here.
-   */
-    @Override
-    protected List<ReactPackage> getPackages() {
-        return Arrays.<ReactPackage>asList(
-            new MainReactPackage(),
-            new FilePickerPackage() // Add package
-        );
-    }
-...
-}
-
-```
 ## Usage
+
+For detailed usage, please check `examples` folder.
+
+### Picking a file
+
+In order to pick any file using native UI, you'll have to import FilePicker module and call `pickFile` method on it.
+
 1. In your React Native javascript code, bring in the native module:
 
-  ```javascript
-var FilePickerManager = require('NativeModules').FilePickerManager;
-  ```
-2. Use it like so:
-
-  When you want to display the picker:
-  ```javascript
+```js
 import FilePicker from 'react-native-file-picker';
 
-FilePicker
-  .pickFile({ title: 'Pick something', type: '*/*' })
-  .then(response => {
-    if (response.cancelled) {
-      console.log('User cancelled file picker');
-    } else {
-      console.log("File", response);
-    }
-  })
-  .catch(e => {
-    console.error('Error', e);
-  });
-  ```
+FilePicker.pickFile({ title: 'Pick something', type: '*/*' })
+   .then(res => {
+     if (!res.cancelled) {
+       console.log('We have a file');
+     } 
+   })
+   .catch(err => {});
+```
+
+Returned promise will be resolved after user either selects a file or dismisses the picker. Otherwise, it will be rejected with an error indicating the failure.
+
+**Note**: `response` the promise resolves with has a `cancelled` boolean you can use to indicate whether file was picked or not.
