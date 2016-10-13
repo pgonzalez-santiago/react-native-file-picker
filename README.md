@@ -41,8 +41,6 @@ For detailed usage, please check `examples` folder.
 
 In order to pick any file using native UI, you'll have to import FilePicker module and call `pickFile` method on it.
 
-1. In your React Native javascript code, bring in the native module:
-
 ```js
 import FilePicker from 'react-native-file-picker';
 
