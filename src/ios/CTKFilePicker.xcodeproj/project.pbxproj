@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		014A3B6A1C6CF34500B6D375 /* FilePickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 014A3B691C6CF34500B6D375 /* FilePickerManager.m */; };
+		AD3BE6D11DAFA37C000CC24F /* CTKFilePickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AD3BE6CF1DAFA37C000CC24F /* CTKFilePickerManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,9 +23,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		014A3B5C1C6CF33500B6D375 /* libRNFilePicker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNFilePicker.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		014A3B681C6CF34500B6D375 /* FilePickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilePickerManager.h; sourceTree = "<group>"; };
-		014A3B691C6CF34500B6D375 /* FilePickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilePickerManager.m; sourceTree = "<group>"; };
+		014A3B5C1C6CF33500B6D375 /* libCTKFilePicker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCTKFilePicker.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD3BE6CF1DAFA37C000CC24F /* CTKFilePickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTKFilePickerManager.m; sourceTree = "<group>"; };
+		AD3BE6D01DAFA37C000CC24F /* CTKFilePickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTKFilePickerManager.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,8 +42,8 @@
 		014A3B531C6CF33500B6D375 = {
 			isa = PBXGroup;
 			children = (
-				014A3B681C6CF34500B6D375 /* FilePickerManager.h */,
-				014A3B691C6CF34500B6D375 /* FilePickerManager.m */,
+				AD3BE6CF1DAFA37C000CC24F /* CTKFilePickerManager.m */,
+				AD3BE6D01DAFA37C000CC24F /* CTKFilePickerManager.h */,
 				014A3B5D1C6CF33500B6D375 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -51,7 +51,7 @@
 		014A3B5D1C6CF33500B6D375 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				014A3B5C1C6CF33500B6D375 /* libRNFilePicker.a */,
+				014A3B5C1C6CF33500B6D375 /* libCTKFilePicker.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -59,9 +59,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		014A3B5B1C6CF33500B6D375 /* RNFilePicker */ = {
+		014A3B5B1C6CF33500B6D375 /* CTKFilePicker */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 014A3B651C6CF33500B6D375 /* Build configuration list for PBXNativeTarget "RNFilePicker" */;
+			buildConfigurationList = 014A3B651C6CF33500B6D375 /* Build configuration list for PBXNativeTarget "CTKFilePicker" */;
 			buildPhases = (
 				014A3B581C6CF33500B6D375 /* Sources */,
 				014A3B591C6CF33500B6D375 /* Frameworks */,
@@ -71,9 +71,9 @@
 			);
 			dependencies = (
 			);
-			name = RNFilePicker;
+			name = CTKFilePicker;
 			productName = RNFilePicker;
-			productReference = 014A3B5C1C6CF33500B6D375 /* libRNFilePicker.a */;
+			productReference = 014A3B5C1C6CF33500B6D375 /* libCTKFilePicker.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -90,7 +90,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 014A3B571C6CF33500B6D375 /* Build configuration list for PBXProject "RNFilePicker" */;
+			buildConfigurationList = 014A3B571C6CF33500B6D375 /* Build configuration list for PBXProject "CTKFilePicker" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -102,7 +102,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				014A3B5B1C6CF33500B6D375 /* RNFilePicker */,
+				014A3B5B1C6CF33500B6D375 /* CTKFilePicker */,
 			);
 		};
 /* End PBXProject section */
@@ -112,7 +112,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				014A3B6A1C6CF34500B6D375 /* FilePickerManager.m in Sources */,
+				AD3BE6D11DAFA37C000CC24F /* CTKFilePickerManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,7 +230,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		014A3B571C6CF33500B6D375 /* Build configuration list for PBXProject "RNFilePicker" */ = {
+		014A3B571C6CF33500B6D375 /* Build configuration list for PBXProject "CTKFilePicker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				014A3B631C6CF33500B6D375 /* Debug */,
@@ -239,7 +239,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		014A3B651C6CF33500B6D375 /* Build configuration list for PBXNativeTarget "RNFilePicker" */ = {
+		014A3B651C6CF33500B6D375 /* Build configuration list for PBXNativeTarget "CTKFilePicker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				014A3B661C6CF33500B6D375 /* Debug */,

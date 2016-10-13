@@ -1,4 +1,11 @@
-/* @flow */
+/**
+ * index.js
+ * react-native-file-picker
+ *
+ * Copyright © 2016 Callstack.io. All rights reserved.
+ *
+ * @flow
+ */
 
 import { NativeModules } from 'react-native';
 
@@ -13,8 +20,8 @@ type PickerResponse =
   | { cancelled: true; }
   | { uri: string; path?: string; }
 
-export default class FilePicker {
-  static pickFile(options?: PickerOptions = {}): Promise<PickerResponse> {
+export default {
+  pickFile(options?: PickerOptions = {}): Promise<PickerResponse> {
     return FilePickerManager.pickFile(options);
-  }
-}
+  },
+};

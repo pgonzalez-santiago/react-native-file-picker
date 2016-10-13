@@ -1,12 +1,11 @@
 {
-  "name": "Example",
+  "name": "example",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start": "node ../node_modules/react-native/local-cli/cli.js start -- projectRoots ../",
+    "ios": "node ../node_modules/react-native/local-cli/cli.js run-ios",
+    "android": "node ../node_modules/react-native/local-cli/cli.js run-android",
     "adb-reverse": "adb reverse tcp:8081 tcp:8081"
-  },
-  "dependencies": {
-    "react-native": "^0.21.0"
   }
 }
